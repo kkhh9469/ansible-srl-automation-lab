@@ -1,0 +1,9 @@
+# containerlab
+containerlab/clab-2srl_lab
+*.json
+
+# ansible
+*.log
+
+#important
+.env
