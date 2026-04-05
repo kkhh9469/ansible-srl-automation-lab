@@ -1,22 +1,31 @@
 # Ansible-srl-automation-lab
 
 Tech Stack
-* containerlab
-* ansible
-* Nokia SR linux
+* Topology: containerlab
+* Automation: ansible
+* Network OS: Nokia SR Linux
+
+# Network Topology
+
+![Network Topology](./images/img1.png)
 
 
-# How to run
-## containerlab
-deploy topology
-<pre>
+# How to Run
+
+1. containerlab deploy
+
+```
 containerlab deploy -t containerlab/3_srl.yml
-</pre>
+```
 
-## Ansible
-run playbook
-<pre>
+2. Run Ansible Playbook 
+
+```
 ansible-playbook -i ansible/inventory.yml ansible/playbook/[name].yml
-</pre>
+```
 
-### config ip address
+# Playbook Details
+
+## config_ip_addr.yml
+
+This playbook assigns IP addresses to the device interfaces and adds them to the default network-instance
