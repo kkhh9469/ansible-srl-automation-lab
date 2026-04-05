@@ -1,0 +1,36 @@
+---
+- name: config_ip_addr
+  hosts: srl_nodes
+  gather_facts: false
+
+  tasks:
+    - name: enable int
+      nokia.srlinux.config:
+        update:
+          - path: "/interface[name={{ item.name }}]"
+            value:
+              admin-state: enable
+      loop: "{{ srl_interfaces }}"
+
+    - name: enable_ipv4
+      nokia.srlinux.config:
+        update:
+          - path: "/interface[name={{ item.name }}]/subinterface[index={{ item.index }}]/ipv4"
+            value:
+              admin-state: enable
+      loop: "{{ srl_interfaces }}"
+
+    - name: config_ipv4_ip_addr
+      nokia.srlinux.config:
+        replace: 
+          - path: "/interface[name={{ item.name }}]/subinterface[index={{ item.index }}]/ipv4/address"
+            value:
+              ip-prefix: "{{ item.ip }}"
+      loop: "{{ srl_interfaces }}"
+
+    - name: set_network_instance
+      nokia.srlinux.config:
+        update:
+          - path: "/network-instance[name=defalut]/interface[name={{ item.name }}.{{ item.index }}]"
+            value: {}
+      loop: "{{ srl_interfaces }}"

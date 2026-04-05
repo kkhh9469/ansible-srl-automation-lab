@@ -1,4 +1,4 @@
-# ansible-srl-automation-lab
+# Ansible-srl-automation-lab
 
 Tech Stack
 * containerlab
@@ -6,17 +6,17 @@ Tech Stack
 * Nokia SR linux
 
 
+# How to run
 ## containerlab
 deploy topology
 <pre>
-containerlab deploy -t containerlab/2_srl.yml
+containerlab deploy -t containerlab/3_srl.yml
 </pre>
 
-## ansible
+## Ansible
 run playbook
 <pre>
 ansible-playbook -i ansible/inventory.yml ansible/playbook/[name].yml
 </pre>
 
-### change_hostname.yml
-Set the device hostname based on the inventory.yml
+### config ip address

@@ -1,0 +1,10 @@
+srl_interfaces:
+  - id: "int1_1"
+    name: "ethernet-1/1"
+    index: 0
+    ip: "10.0.0.1/30"
+
+  - id: "int1_2"
+    name: "ethernet-1/2"
+    index: 0
+    ip: "10.0.0.5/30"

@@ -1,0 +1,19 @@
+name: 3srl_lab
+topology:
+  nodes:
+    srl1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:latest
+      mgmt-ipv4: 172.20.20.10
+    srl2:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:latest
+      mgmt-ipv4: 172.20.20.20
+    srl3:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:latest
+      mgmt-ipv4: 172.20.20.30
+
+  links:
+    - endpoints: ["srl1:e1-1", "srl2:e1-1"]
+    - endpoints: ["srl1:e1-2", "srl3:e1-1"]
