@@ -1,0 +1,23 @@
+- name: config ipv4 addr
+  nokia.srlinux.config:
+    update:
+      - path: "/interface[name={{ item.name }}]"
+        value:
+          admin-state: enable
+          subinterface:
+            admin-state: enable
+            index: "{{ item.index }}"
+            ipv4:
+              admin-state: enable
+              address:
+                ip-prefix: "{{ item.ip }}"
+  loop: "{{ srl_interfaces }}"
+
+
+- name: attach_network_instance
+  nokia.srlinux.config:
+    update:
+      - path: "/network-instance[name={{ item.net_instance | default('default') }}]\
+          /interface[name={{ item.name }}.{{ item.index }}]"
+        value: {}
+  loop: "{{ srl_interfaces }}"

@@ -1,0 +1,7 @@
+---
+- name: config_ip_addr
+  hosts: srl_nodes
+  gather_facts: false
+
+  roles:
+    - ipv4_config
