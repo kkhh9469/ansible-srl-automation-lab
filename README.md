@@ -21,11 +21,11 @@ containerlab deploy -t containerlab/3_srl.yml
 2. Run Ansible Playbook 
 
 ```
-ansible-playbook -i ansible/inventory.yml ansible/playbook/[name].yml
+ansible-playbook -i ansible/inventory/hosts.yml ansible/playbook/[name].yml
 ```
 
 ## Playbook Details
 
-### config_ip_addr.yml
+### ipv4_config
 
 This playbook assigns IP addresses to the device interfaces and adds them to the default network-instance
