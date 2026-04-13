@@ -4,6 +4,7 @@
 * Topology: containerlab
 * Automation: ansible
 * Network OS: Nokia SR Linux
+* Client OS: alpine
 
 ## Network Topology
 
