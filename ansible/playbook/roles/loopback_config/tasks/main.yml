@@ -1,0 +1,20 @@
+- name: Config loopback
+  nokia.srlinux.config:
+    update:
+      - path: "/interface[name=system0]"
+        value:
+          admin-state: enable
+          subinterface:
+            admin-state: enable
+            index: 0
+            ipv4:
+              admin-state: enable
+              address:
+                ip-prefix: "{{ loopback_ip }}"
+
+- name: Attach network instance
+  nokia.srlinux.config:
+    update:
+      - path: "/network-instance[name=default]\
+          /interface[name='system0.0']"
+        value: {}

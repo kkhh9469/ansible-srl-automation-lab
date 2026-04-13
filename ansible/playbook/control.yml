@@ -1,7 +1,8 @@
 ---
-- name: config_ip_addr
+- name: Config_ip_addr
   hosts: srl_nodes
   gather_facts: false
 
   roles:
     - ipv4_config
+    - loopback_config

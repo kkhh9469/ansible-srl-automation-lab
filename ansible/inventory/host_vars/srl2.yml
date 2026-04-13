@@ -1,5 +1,0 @@
-srl_interfaces:
-  - id: "int1_1"
-    name: "ethernet-1/1"
-    index: 0
-    ip: "10.0.0.2/30"

@@ -1,0 +1,15 @@
+loopback_ip: 1.1.1.1/32
+router_id: 1.1.1.1
+
+ospf_area: 0.0.0.0
+
+interfaces:
+  - id: "int1_1"
+    name: "ethernet-1/1"
+    index: 0
+    ipv4: "10.0.0.1/30"
+
+  - id: "int1_2"
+    name: "ethernet-1/2"
+    index: 0
+    ipv4: "10.0.0.5/30"
