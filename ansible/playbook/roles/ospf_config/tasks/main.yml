@@ -1,0 +1,30 @@
+- name: Ospf global settings
+  nokia.srlinux.config:
+    update:
+      - path: "/network-instance[name={{ item.net_instance | default('default') }}]\
+         /protocols/ospf/instance[name={{ item.net_instance | default('default') }}]"
+        value:
+          version: ospf-v2
+          admin-state: enable
+          router-id: "{{ router_id }}"
+
+- name: Add int to ospf area
+  nokia.srlinux.config:
+    update:
+      - path: "/network-instance[name={{ item.net_instance | default('default') }}]\
+         /protocols/ospf/instance[name={{ item.net_instance | default('default') }}]\
+         /area[area-id={{ ospf_area }}]/interface[interface-name={{ item.name }}.{{ item.index }}]"
+        value:
+          admin-state: enable
+          interface-type: point-to-point
+  loop: "{{ interfaces }}"
+
+- name: Add loopback to ospf area
+  nokia.srlinux.config:
+    update:
+      - path: "/network-instance[name={{ item.net_instance | default('default') }}]\
+         /protocols/ospf/instance[name={{ item.net_instance | default('default') }}]\
+         /area[area-id={{ ospf_area }}]/interface[interface-name=system0.0]"
+        value:
+          admin-state: enable
+          passive: true

@@ -2,6 +2,7 @@ loopback_ip: 4.4.4.4/32
 router_id: 4.4.4.4
 
 ospf_area: 0.0.0.0
+ospf_version: ospf-v2
 
 interfaces:
   - id: "int1_1"
