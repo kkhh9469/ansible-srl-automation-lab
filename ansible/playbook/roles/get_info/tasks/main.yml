@@ -1,0 +1,62 @@
+---
+# - name: debug_get_info
+#   nokia.srlinux.get:
+#     paths:
+#       - path: "/interface[name=system0]"
+#   register: debug_result
+
+# - name: debug_cli
+#   ansible.builtin.debug:
+#     var: debug_result.result[0].subinterface[0].ipv4.address[0]['ip-prefix']
+
+
+- name: Get int info
+  nokia.srlinux.get:
+    paths:
+      - path: "/interface[name={{ item.name }}]"
+  register: int_state
+  loop: "{{ interfaces }}"
+
+- name: Add IPv4 info
+  ansible.builtin.set_fact:
+     ipv4: "{{ ipv4 | default([]) + \
+      ['int: ' + item.item.name + '.' + (item.result[0].subinterface[0]['index'] | string) + ' / ' + \
+      'ipv4: ' + item.result[0].subinterface[0].ipv4.address[0]['ip-prefix']] }}" 
+  loop: "{{ int_state.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+
+- name: Get loopback info
+  nokia.srlinux.get:
+    paths:
+      - path: "/interface[name=system0]"
+  register: loopback_state
+
+- name: Add loopback info
+  ansible.builtin.set_fact:
+    loopback: "{{ loopback | default([]) \
+     + ['loopback: ' + 'system0.0' + ' / ' \
+     + 'ipv4: ' + loopback_state.result[0].subinterface[0].ipv4.address[0]['ip-prefix']] }}"
+
+- name: Make dir
+  ansible.builtin.file:
+    path: "./reports"
+    state: directory
+    mode: '0775'
+  delegate_to: localhost
+  run_once: true
+
+- name: Save report to a file
+  ansible.builtin.copy:
+    content: |
+      # loopback Status
+      {% for item in loopback %}
+      * {{ item }}
+      {% endfor %}
+
+      # Network Status
+      {% for item in ipv4 %}
+      * {{ item }}
+      {% endfor %}
+    dest: "./reports/report_{{ inventory_hostname }}.md"
+  delegate_to: localhost

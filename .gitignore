@@ -4,6 +4,7 @@
 
 # ansible
 *.log
+/ansible/playbook/reports
 
 #important
 .env

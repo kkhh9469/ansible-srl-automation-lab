@@ -7,3 +7,4 @@
     - ipv4_config
     - loopback_config
     - ospf_config
+    - get_info
