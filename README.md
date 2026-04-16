@@ -25,6 +25,8 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/playbook/control.yml
 
 # reports
 
+path: ansible/playbook/reports
+
 ## spine1
 ![topology](images/spine1.png)
 
