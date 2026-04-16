@@ -1,14 +1,4 @@
 ---
-# - name: debug_get_info
-#   nokia.srlinux.get:
-#     paths:
-#       - path: "/interface[name=system0]"
-#   register: debug_result
-
-# - name: debug_cli
-#   ansible.builtin.debug:
-#     var: debug_result.result[0].subinterface[0].ipv4.address[0]['ip-prefix']
-
 
 - name: Get int info
   nokia.srlinux.get:
@@ -38,6 +28,39 @@
      + ['loopback: ' + 'system0.0' + ' / ' \
      + 'ipv4: ' + loopback_state.result[0].subinterface[0].ipv4.address[0]['ip-prefix']] }}"
 
+- name: get ospf info
+  nokia.srlinux.get:
+    paths:
+      - path: "/network-instance[name=default]/protocols/ospf/instance[name=default]"
+  register: ospf
+
+- name: Summary OSPF Neighbors into one list
+  ansible.builtin.set_fact:
+    ospf_summary: >-
+      {% set neighbors = [] %}
+      {% for area in ospf.result[0].area | default([]) %}
+        {% for interface in area.interface | default([]) %}
+          {% if interface.neighbor is defined %}
+            {% for nbr in interface.neighbor %}
+              {% set clean_state = nbr['adjacency-state'].split(':') | last %}
+              {% set _ = neighbors.append(
+                'Area: ' + (area['area-id'] | string) +
+                ' / Int: ' + interface['interface-name'] +
+                ' / RID: ' + nbr['router-id'] +
+                ' / State: ' + clean_state
+              ) %}
+            {% endfor %}
+          {% else %}
+            {% set _ = neighbors.append(
+              'Area: ' + (area['area-id'] | string) +
+              ' / Int: ' + interface['interface-name'] +
+              ' / State: No Neighbor'
+            ) %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+      {{ neighbors | to_json }}
+
 - name: Make dir
   ansible.builtin.file:
     path: "./reports"
@@ -58,5 +81,11 @@
       {% for item in ipv4 %}
       * {{ item }}
       {% endfor %}
+
+      # OSPF Status Report
+      {% for item in ospf_summary | from_json %}
+      * {{ item }}
+      {% endfor %}
+
     dest: "./reports/report_{{ inventory_hostname }}.md"
   delegate_to: localhost
