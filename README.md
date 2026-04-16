@@ -25,14 +25,14 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/playbook/control.yml
 
 # reports
 
-spine1
+## spine1
 ![topology](images/spine1.png)
 
-spine2
+## spine2
 ![topology](images/spine2.png)
 
-leaf1
+## leaf1
 ![topology](images/leaf1.png)
 
-leaf2
+## leaf2
 ![topology](images/leaf2.png)
